@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Adoption</title>
+    <link rel="stylesheet" href="adoption.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Adopt a Pet</h1>
+    </header>
+
+    <section class="filters">
+      <button class="filter-button" data-species="all">All</button>
+      <button class="filter-button" data-species="dogs">Dogs</button>
+      <button class="filter-button" data-species="cats">Cats</button>
+      <button class="filter-button" data-species="birds">Birds</button>
+      <button class="filter-button" data-species="rabbits">Other</button>
+    </section>
+
+    <section class="pet-grid">
+      <div class="pet-card" data-species="dogs">
+        <img src="/images/dog1.jpg" alt="Golden Retriever" />
+        <div class="pet-info">
+          <h3>Buddy</h3>
+          <p>Golden Retriever, 2 years old</p>
+          <button class="apply-button">Apply for Adoption</button>
+        </div>
+      </div>
+
+      <div class="pet-card" data-species="cats">
+        <img src="/images/cat1.jpg" alt="Siamese Cat" />
+        <div class="pet-info">
+          <h3>Whiskers</h3>
+          <p>Siamese, 3 years old</p>
+          <button class="apply-button">Apply for Adoption</button>
+        </div>
+      </div>
+
+      <div class="pet-card" data-species="birds">
+        <img src="/images/bird1.jpg" alt="Parrot" />
+        <div class="pet-info">
+          <h3>Kiwi</h3>
+          <p>Parrot, 1 year old</p>
+          <button class="apply-button">Apply for Adoption</button>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

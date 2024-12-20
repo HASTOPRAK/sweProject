@@ -16,6 +16,10 @@ app.get("/signup", (req, res) => {
   res.render("signup.ejs");
 });
 
+app.get("/adoptation", (req, res) => {
+  res.render("adoption.ejs");
+});
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}.`);
 });
