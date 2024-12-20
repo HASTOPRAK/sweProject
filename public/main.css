@@ -1,0 +1,11 @@
+#welcome{
+    background-image: url(/images/background-photo.jpg);
+    margin-bottom: 05vh;
+    width: 100%;
+    height: 600px;
+    background-size: cover;
+    background-position: center;
+}
+body{
+    background-color: rgb(235, 182, 10);
+}
