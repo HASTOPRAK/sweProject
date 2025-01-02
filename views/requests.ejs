@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Requests</title>
+    <link
+      rel="shortcut icon"
+      href="/images/ShelterConnect.png"
+      type="image/x-icon"
+    />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Arial", sans-serif;
+        background: linear-gradient(45deg, #b689ff, #1dbfff);
+        background-size: 400% 400%;
+        animation: gradientMove 5s ease infinite;
+      }
+
+      header {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        background-color: rgba(0, 0, 0, 0.6);
+        color: white;
+        z-index: 10;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      }
+
+      header h1 {
+        margin: 0;
+        font-size: 1.5rem;
+      }
+      h2 {
+        text-align: center;
+        margin: 20px 0;
+        font-size: 24px;
+      }
+
+      table {
+        width: 80%;
+        margin: 0 auto;
+        border-collapse: collapse;
+        background-color: #fff;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      th,
+      td {
+        padding: 12px 15px;
+        text-align: left;
+        border: 1px solid #ddd;
+      }
+
+      th {
+        background-color: #3498db;
+        color: #fff;
+        font-size: 16px;
+      }
+
+      tr:nth-child(even) {
+        background-color: #f2f2f2;
+      }
+
+      tr:hover {
+        background-color: #e1e1e1;
+      }
+
+      button {
+        padding: 8px 12px;
+        margin: 5px;
+        font-size: 14px;
+        cursor: pointer;
+        border: none;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+      }
+
+      button:hover {
+        opacity: 0.8;
+      }
+
+      .approve-btn {
+        background-color: #2ecc71;
+        color: white;
+      }
+
+      .reject-btn {
+        background-color: #e74c3c;
+        color: white;
+      }
+
+      @keyframes gradientMove {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <h1>
+          Shelter Connect
+          <img src="/images/ShelterConnect.png" alt="Shelter Connect Logo" />
+        </h1>
+      </div>
+    </header>
+    <h2>Adoption Requests</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Pet Name</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% requests.forEach(function(request) { %>
+        <tr>
+          <td><%= request.username %></td>
+          <td><%= request.email %></td>
+          <td><%= request.pet_name %></td>
+          <td><%= request.status %></td>
+          <td>
+            <button
+              class="approve-btn"
+              onclick="updateRequest('<%= request.id %>', 'approved')"
+            >
+              Approve
+            </button>
+            <button
+              class="reject-btn"
+              onclick="updateRequest('<%= request.id %>', 'rejected')"
+            >
+              Reject
+            </button>
+          </td>
+        </tr>
+        <% }); %>
+      </tbody>
+    </table>
+
+    <script>
+      function updateRequest(requestId, status) {
+        fetch("/update-request", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ requestId, status }),
+        })
+          .then((response) => response.json())
+          .then((data) => alert(data.message))
+          .catch((err) => console.error(err));
+      }
+    </script>
+  </body>
+</html>

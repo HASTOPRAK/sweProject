@@ -3,64 +3,62 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sign Up</title>
-    <link rel="stylesheet" href="login.css" />
+    <title>Signup</title>
+    <link rel="stylesheet" href="/login.css" />
+    <link
+      rel="shortcut icon"
+      href="/images/ShelterConnect.png"
+      type="image/x-icon"
+    />
   </head>
   <body>
-    <div class="signup-container">
-      <h2>Sign Up</h2>
-      <form action="#" method="POST">
-        <!-- Username -->
+    <div class="login-container">
+      <h1>Signup</h1>
+      <% if (error) { %>
+      <div class="error-message" id="error-box"><%= error %></div>
+      <% } %>
+      <form action="/signup" method="POST">
         <div class="form-group">
-          <label for="username">Username</label>
+          <label for="username">Username:</label>
           <input
             type="text"
             id="username"
             name="username"
-            placeholder="Enter your username"
+            placeholder="Username"
             required
           />
         </div>
-        <!-- Email -->
         <div class="form-group">
-          <label for="email">Email</label>
+          <label for="email">Email:</label>
           <input
             type="email"
             id="email"
             name="email"
-            placeholder="Enter your email"
+            placeholder="Email"
             required
           />
         </div>
-        <!-- Password -->
         <div class="form-group">
-          <label for="password">Password</label>
+          <label for="password">Password:</label>
           <input
             type="password"
             id="password"
             name="password"
-            placeholder="Enter your password"
+            placeholder="Password"
             required
           />
         </div>
-        <!-- Confirm Password -->
-        <div class="form-group">
-          <label for="confirm-password">Confirm Password</label>
-          <input
-            type="password"
-            id="confirm-password"
-            name="confirm-password"
-            placeholder="Confirm your password"
-            required
-          />
-        </div>
-        <!-- Submit Button -->
-        <button type="submit" class="button">Sign Up</button>
+        <button type="submit" class="button">Signup</button>
       </form>
-      <!-- Link to Login -->
-      <div class="link">
-        <p>Already have an account? <a href="/login">Login</a></p>
-      </div>
     </div>
+    <script>
+      const errorBox = document.getElementById("error-box");
+      if (errorBox) {
+        errorBox.style.display = "block";
+        setTimeout(() => {
+          errorBox.style.display = "none";
+        }, 5000);
+      }
+    </script>
   </body>
 </html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adopt a Pet</title>
+  <link rel="stylesheet" href="adoption.css" />
+</head>
+<body>
+  <header>
+    <h1>Adopt a Pet</h1>
+  </header>
+
+  <!-- Filtreleme Düğmeleri -->
+  <section class="filters">
+    <a href="/user_adoption?type=all"><button class="filter-button">All</button></a>
+    <a href="/user_adoption?type=dog"><button class="filter-button">Dogs</button></a>
+    <a href="/user_adoption?type=cat"><button class="filter-button">Cats</button></a>
+  </section>
+
+  <!-- Hayvan Kartları -->
+  <section class="pet-grid">
+    <% animals.forEach(animal => { %>
+    <div class="pet-card" data-species="<%= animal.type %>">
+      <img src="<%= animal.image_path %>" alt="<%= animal.name %>" />
+      <div class="pet-info">
+        <h3><%= animal.name %></h3>
+        <p><%= animal.type %>, <%= animal.age %> years old</p>
+        <% if (animal.description) { %>
+        <p><%= animal.description %></p>
+        <% } %>
+        <% if (user) { %>
+        <form class="adoption-form">
+          <input type="hidden" name="animal_id" value="<%= animal.id %>" />
+          <button type="submit" class="apply-button">Apply for Adoption</button>
+        </form>
+        <% } else { %>
+        <p>Please log in to apply for adoption.</p>
+        <% } %>
+      </div>
+    </div>
+    <% }) %>
+  </section>
+
+  <!-- Toast Mesajı -->
+  <div id="toast-message" class="hidden"> </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const forms = document.querySelectorAll(".adoption-form");
+      forms.forEach((form) => {
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault(); // Varsayılan form gönderimini engelle
+          const animalId = form.querySelector("input[name='animal_id']").value;
+
+          try {
+            const response = await fetch("/apply", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ animal_id: animalId }),
+            });
+            const result = await response.json();
+
+            if (response.ok) {
+              showToast(result.message, "success");
+            } else {
+              showToast(result.error || "An error occurred.", "error");
+            }
+          } catch (error) {
+            console.error(error);
+            showToast("Failed to send the adoption request.", "error");
+          }
+        });
+      });
+    });
+
+    // Toast mesajını göstermek için fonksiyon
+    function showToast(message, type) {
+      const toast = document.getElementById("toast-message");
+      toast.textContent = message;
+      toast.className = `toast ${type}`;
+      toast.classList.remove("hidden");
+      setTimeout(() => {
+        toast.classList.add("hidden");
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
