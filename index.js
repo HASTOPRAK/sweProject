@@ -1,9 +1,9 @@
-import Database from "better-sqlite3";  // Import the better-sqlite3 module
-import express from "express";  // Import the express module
-import path from "path";  // Import the path module
-import { fileURLToPath } from "url";  // Import the fileURLToPath function
+import Database from "better-sqlite3"; // Import the better-sqlite3 module
+import express from "express"; // Import the express module
+import path from "path"; // Import the path module
+import { fileURLToPath } from "url"; // Import the fileURLToPath function
 import bodyParser from "body-parser"; // Import the body-parser module
-import session from "express-session";  // Import the express-session module                                                   
+import session from "express-session"; // Import the express-session module
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -137,7 +137,9 @@ app.post("/login", (req, res) => {
   }
 
   try {
-    const user = db.prepare("SELECT * FROM users WHERE email = ? AND password = ?").get(email, password);
+    const user = db
+      .prepare("SELECT * FROM users WHERE email = ? AND password = ?")
+      .get(email, password);
 
     if (!user) {
       return res.render("login", { error: "Invalid email or password." });
@@ -181,7 +183,11 @@ app.get("/user_adoption", ensureLoggedIn, (req, res) => {
   try {
     const stmt = db.prepare(query);
     const animals = stmt.all(...params);
-    res.render("user_adoption", { animals, filter: type || "all", user: req.session.user });
+    res.render("user_adoption", {
+      animals,
+      filter: type || "all",
+      user: req.session.user,
+    });
   } catch (err) {
     console.error("Error fetching animal data:", err.message);
     res.status(500).send("An error occurred while fetching animal data.");
@@ -214,7 +220,7 @@ app.get("/staff_adoption", ensureStaff, (req, res) => {
 app.post("/apply", (req, res) => {
   const { animal_id } = req.body;
   const user = req.session.user;
-  
+
   if (!user || !animal_id) {
     return res.status(400).json({ error: "Missing user or pet ID." });
   }
@@ -227,19 +233,25 @@ app.post("/apply", (req, res) => {
     res.json({ message: "Adoption request successfully sent." });
   } catch (err) {
     console.error("Error creating adoption request:", err.message);
-    res.status(500).json({ error: "An error occurred while creating the request." });
+    res
+      .status(500)
+      .json({ error: "An error occurred while creating the request." });
   }
 });
 
 // View Requests (Staff Only)
 app.get("/requests", ensureStaff, (req, res) => {
   try {
-    const requests = db.prepare(`
+    const requests = db
+      .prepare(
+        `
       SELECT ar.id, u.username, u.email, a.name AS pet_name, ar.request_status AS status
       FROM adoption_requests ar
       JOIN users u ON ar.user_id = u.id
       JOIN animals a ON ar.animal_id = a.id
-    `).all();
+    `
+      )
+      .all();
 
     res.render("requests", { requests });
   } catch (err) {
@@ -260,7 +272,9 @@ app.post("/update-request", ensureStaff, (req, res) => {
     res.json({ message: "Request status updated successfully." });
   } catch (err) {
     console.error("Error updating request status:", err.message);
-    res.status(500).json({ error: "An error occurred while updating the request." });
+    res
+      .status(500)
+      .json({ error: "An error occurred while updating the request." });
   }
 });
 
